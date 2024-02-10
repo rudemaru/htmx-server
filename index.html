@@ -9,41 +9,44 @@
     <title>Document</title>
 </head>
 <body class="container">
+
+    <style>
+        ul {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 1em;
+            text-indent: -1em;
+            background-color: lavender;
+        }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <div class="row mt-4 g-4">
-            <div class="col-8">
-                <h1 class="mb-4">Film List</h1>
-            
-                <ul class="list-group fs-5 me-5" id="contact-list">
-                    {{ range .Contacts }}
-                    {{ block "contact-list-element" .}}
-                        <li class="list-group-item bg-primary text-white">{{ .Name }} - {{ .Email }}</li>
-                    {{ end}}
+            <div class="col">
+                <h1>SOME STATISTICS</h1>
+                <form hx-post="/add-user/" hx-target="#user-list" hx-swap="beforeend">
+                    <label for="fname">Username:</label><br>
+                    <input type="text" id="username-field" name="username"><br>
+                    <label for="lname">Statistic:</label><br>
+                    <input type="text" id="statistic-field" name="statistic"><br><br>
+                    <input type="submit" value="Submit"><br><br>
+                </form> 
+                <form hx-post="/sort-users/" hx-target="#user-list" hx-swap="">
+                    <input type="submit" value="Sort users">
+                </form> 
+            </div>
+            <div class="col">
+                <h1>USERS</h1>
+                <ul id="user-list">
+                    {{ block "user-list" .}}
+                    {{ range .Users }}
+                    {{ block "users-list-element" .}}
+                        <li>{{ .Username }} - {{ .Statistic }}</li>
                     {{ end }}
-                </ul>
+                    {{ end }}
+                    {{ end }}
+                </ul>   
             </div>
-    
-            <div class="col-4">
-                <h1 class="mb-4">Add Contact</h1>
-    
-                <form hx-post="/add-contact/" hx-target="#contact-list" hx-swap="beforeend" hx-indicator ="#spinner">
-                    <div class="mb-2">
-                        <label for="contact-name">Name</label>
-                        <input type="text" name="c-name" id="name-field" class="form-control" />
-                    </div>
-                    <div class="mb-3">
-                        <label for="film-director">Email</label>
-                        <input type="text" name="c-email" id="email-field" class="form-control" />
-                    </div>
-    
-                    <button type="submit" class="btn btn-primary">
-                        <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status" aria-hidden="true"></span>
-                        Submit
-                    </button>
-                </form>
-            </div>
-    
         </div>
-    
     </body>
 </html>
